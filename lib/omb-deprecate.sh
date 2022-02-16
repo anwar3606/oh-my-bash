@@ -74,7 +74,7 @@ function _omb_deprecate_declare__init {
 }
 if ((_omb_bash_version >= 40300)); then
   _omb_deprecate_declare=()
-  declare -gA _omb_deprecate_declare_counter=()
+  declare -A _omb_deprecate_declare_counter=()
   function _omb_deprecate_declare {
     local __ver=$1 __old=$2 __new=$3 __opts=$4 __msg=$5
     _omb_deprecate_declare__init
@@ -84,9 +84,9 @@ if ((_omb_bash_version >= 40300)); then
     if ((_omb_version >= __ver)); then
       local __index=${#_omb_deprecate_declare[@]}
       _omb_deprecate_declare[__index]=$__old:$__new:$__msg
-      eval "declare -gn $__old='$__new[_omb_deprecate_declare_counter[$__index,\$BASH_SOURCE,\$LINENO]+=\$(_omb_deprecate_declare__notify $__index),0]'"
+      eval "declare -n $__old='$__new[_omb_deprecate_declare_counter[$__index,\$BASH_SOURCE,\$LINENO]+=\$(_omb_deprecate_declare__notify $__index),0]'"
     else
-      eval "declare -gn $__old='$__new'"
+      eval "declare -n $__old='$__new'"
     fi
   }
   function _omb_deprecate_declare__notify {
@@ -185,7 +185,7 @@ fi
 if ((_omb_bash_version >= 40300)); then
   _omb_deprecate_const=()
   _omb_deprecate_const_value=()
-  declare -gA _omb_deprecate_const_counter=()
+  declare -A _omb_deprecate_const_counter=()
   function _omb_deprecate_const {
     local __ver=$1 __old=$2 __value=$3 __msg=$4
     if [[ ${!__old+set} ]]; then
@@ -197,7 +197,7 @@ if ((_omb_bash_version >= 40300)); then
       _omb_deprecate_const[__index]=$__old:$__msg
       _omb_deprecate_const_value[__index]=$__value
       printf -v "_omb_deprecate_Const_$__old" %s "$__value"
-      eval "declare -gn $__old='_omb_deprecate_Const_$__old[_omb_deprecate_const_counter[$__index,\$BASH_SOURCE,\$LINENO]+=\$(_omb_deprecate_const__notify $__index),0]'"
+      eval "declare -n $__old='_omb_deprecate_Const_$__old[_omb_deprecate_const_counter[$__index,\$BASH_SOURCE,\$LINENO]+=\$(_omb_deprecate_const__notify $__index),0]'"
     else
       printf -v "$__old" %s "$__value"
     fi
